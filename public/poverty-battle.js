@@ -76,22 +76,45 @@ fetch('/sex_poverty')
     country2.html('');
 
     dataPoints.forEach((point, index) => {
-        const card = index === 0 ? country1 : country2;
-        card.append('h3').text(point.geo)
-            .style('color', '#003366');
-        card.append('p').text(`Year: ${currentYear}`);
-        card.append('p').text(`Sex: ${point.sex}`);
-        card.append('button')
-            .text('Higher Poverty Rate')
-            .attr('class', 'answer-button') // Add class for easier selection
-            .style('font-size', '14px')
-            .style('padding', '8px 16px')
-            .style('background-color', '#4CAF50')
-            .style('color', 'white')
-            .style('border', 'none')
-            .style('border-radius', '4px')
-            .style('cursor', 'pointer')
-            .on('click', () => checkAnswer(point, dataPoints));
+      const card = index === 0 ? country1 : country2;
+      
+      // Create a container for country name and flag
+      const countryHeader = card.append('div')
+        .style('display', 'flex')
+        .style('align-items', 'center')
+        .style('justify-content', 'center')
+        .style('gap', '10px');
+
+      // Add country flag
+      countryHeader.append('img')
+        .attr('src', `https://flagcdn.com/w80/${getCountryCode(point.geo)}.png`)
+        .attr('width', '50')
+        .attr('height', '30')
+        .style('border', '1px solid #ddd')
+        .on('error', function() {
+          d3.select(this).style('display', 'none');
+        });
+
+      // Add country name
+      countryHeader.append('h3')
+        .text(point.geo)
+        .style('color', '#003366');
+
+      // Rest of the existing code for displaying country details
+      card.append('p').text(`Year: ${currentYear}`);
+      card.append('p').text(`Sex: ${point.sex}`);
+
+      card.append('button')
+        .text('Higher Poverty Rate')
+        .attr('class', 'answer-button')
+        .style('font-size', '14px')
+        .style('padding', '8px 16px')
+        .style('background-color', '#4CAF50')
+        .style('color', 'white')
+        .style('border', 'none')
+        .style('border-radius', '4px')
+        .style('cursor', 'pointer')
+        .on('click', () => checkAnswer(point, dataPoints));
     });
 
     resultDisplay.text('');
@@ -140,3 +163,45 @@ fetch('/sex_poverty')
     // Start the game
     nextRound();
 }
+
+function getCountryCode(countryName) {
+    const countryCodeMap = {
+      'Albania': 'al',
+      'Austria': 'at',
+      'Belgium': 'be',
+      'Bulgaria': 'bg',
+      'Croatia': 'hr',
+      'Cyprus': 'cy',
+      'Czechia': 'cz',
+      'Denmark': 'dk',
+      'Estonia': 'ee',
+      'Finland': 'fi',
+      'France': 'fr',
+      'Germany': 'de',
+      'Greece': 'gr',
+      'Hungary': 'hu',
+      'Iceland': 'is',
+      'Ireland': 'ie',
+      'Italy': 'it',
+      'Latvia': 'lv',
+      'Lithuania': 'lt',
+      'Luxembourg': 'lu',
+      'Malta': 'mt',
+      'Montenegro': 'me',
+      'Netherlands': 'nl',
+      'North Macedonia': 'mk',
+      'Norway': 'no',
+      'Poland': 'pl',
+      'Portugal': 'pt',
+      'Romania': 'ro',
+      'Serbia': 'rs',
+      'Slovakia': 'sk',
+      'Slovenia': 'si',
+      'Spain': 'es',
+      'Sweden': 'se',
+      'Switzerland': 'ch',
+      'Türkiye': 'tr',
+      'United Kingdom': 'gb'
+    };
+    return countryCodeMap[countryName] || 'unknown';
+  }
