@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Visualizations</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <header id="site-header">
+    <img src="" alt="Logo" id="logo">
+    <h1>Risk of Poverty in Europe</h1>
+    <h4>Which countries are at risk of Poverty in Europe?</h4>
+    <div id="nav-buttons">
+      <a href="#map-section" class="nav-button">Map</a>
+      <a href="#line-chart-section" class="nav-button">Line Chart</a>
+      <a href="#bar-chart-section" class="nav-button">Bar Chart</a>
+      <a href="#poverty-battle-section" class="nav-button">Poverty Rate Battle</a>
+    </div>
+  </header>
+  <nav id="main-nav">
+    <div id="controls">
+      <label for="year">Select year:</label>
+      <select id="year">
+        <!-- Options populated by JavaScript -->
+      </select>
+    </div>
+  </nav>
+  <main id="visualizations">
+    <section id="map-section" class="visualization-container">
+      <div id="map"></div>
+      <aside id="map-info">
+        <h2>Map Information</h2>
+        <p>This map displays poverty rates across European countries. Use the dropdown menu to select a year. Darker blue indicates a higher poverty rate.</p>
+      </aside>
+    </section>
+    <section id="line-chart-section" class="visualization-container">
+      <div id="line-chart"></div>
+      <aside id="line-chart-info">
+        <h2>Line Chart Information</h2>
+        <p>This chart shows the trend of poverty rates for men and women over time. The blue line represents men, and the red line represents women.</p>
+      </aside>
+    </section>
+    <section id="bar-chart-section" class="visualization-container">
+      <div id="bar-chart"></div>
+      <aside id="bar-chart-info">
+        <h2>Bar Chart Information</h2>
+        <p>This bar chart displays the median daily income across different countries. X-axis shows countries, and Y-axis shows income levels.</p>
+      </aside>
+    </section>
+    <section id="poverty-battle-section" class="visualization-container">
+      <div id="poverty-battle"></div>
+      <aside id="poverty-battle-info">
+        <h2>Poverty Rate Battle Game</h2>
+        <p>Test your knowledge of poverty rates across different countries. Select the country you think has a higher poverty rate and see how many you can get right!</p>
+      </aside>
+    </section>
+  </main>
+  <footer id="site-footer">
+    <p>&copy; 2024 Group 6. All rights reserved.</p>
+  </footer>
+  <script src="map.js"></script>
+  <script src="line-chart.js"></script>
+  <script src="bar-chart.js"></script>
+  <script src="poverty-battle.js"></script>
+</body>
+</html>
