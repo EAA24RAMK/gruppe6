@@ -10,9 +10,18 @@ header#site-header {
   background-color: #003366;
   color: white;
   text-align: center;
-  padding: 10px 0;
+  padding: 20px 0;
+  position: relative; 
+  text-align: center; 
 }
 
+#logo {
+  position: absolute;
+  left: 10px;
+  top: -30px;
+  width: 275px;
+  height: 275px; 
+}
 nav#main-nav {
   background-color: #f0f0f0;
   padding: 10px 20px;
