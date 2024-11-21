@@ -143,3 +143,47 @@ footer#site-footer {
   display: flex;
   align-items: flex-start;
 }
+
+.icon-container {
+  position: absolute;
+  top: 20px; /* Adjust according to header height */
+  right: 20px;
+  display: inline-block;
+  font-size: 34px; /* Adjust icon size */
+}
+
+.icon-container .box {
+  display: none;
+  position: absolute;
+  top: 40px; /* Adjust to appear below the icon */
+  right: 0;
+  background-color: lightgray;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 150px;
+}
+
+.icon-container:hover .box {
+  display: block;
+}
+
+.box ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.box p {
+  font-size: 24px;
+}
+
+.box li a {
+  color: #003366;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.box li a:hover {
+  text-decoration: underline;
+}
