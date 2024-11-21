@@ -187,3 +187,23 @@ footer#site-footer {
 .box li a:hover {
   text-decoration: underline;
 }
+
+#engage-section {
+  background: #f9f9f9;
+  border-left: 4px solid #1e90ff;
+  padding: 10px 15px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+#engage-section h3 {
+  color: #1e90ff;
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+#engage-section p {
+  font-size: 1em;
+  line-height: 1.6;
+  color: #333;
+}
