@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/EAA24RAMK/gruppe6/refs/heads/main/images/favicon.ico">
 </head>
 <body>
   <header id="site-header">
@@ -31,6 +32,7 @@
     </div>
     </div>
   </header>
+
   <nav id="main-nav">
     <div id="controls">
       <label for="year">Select year:</label>
@@ -39,40 +41,76 @@
       </select>
     </div>
   </nav>
+
   <main id="visualizations">
     <section id="map-section" class="visualization-container">
       <div id="map"></div>
       <aside id="map-info">
-        <h2>Map Information</h2>
-        <p>This map displays poverty rates across European countries. Use the dropdown menu to select a year. Darker blue indicates a higher poverty rate.</p>
+        <h2><i class="bi bi-globe-europe-africa"></i> Map Information</h2>
+        <p>This map displays at risk of poverty rates across European countries.</p>
+        <p>
+            A <strong style="color: lightblue;">lighter shade of blue</strong> represents a lower at risk of poverty rate, and a 
+            <strong style="color: darkblue;">darker shade of blue</strong> indicates a higher at risk of poverty rate. The grey color represents the countries with no accessible data.
+        </p>
+        <p>Use the dropdown menu to select a year and watch the map change.</p>
+        <!-- Knap -->
+        <div style="text-align: center; margin-top: 20px;">
+          <label for="toggle-info" id="toggle-question" style="cursor: pointer; color: blue; padding: 5px 10px; display: inline-block; border: 1px solid #ccc; border-radius: 5px;">
+              What is at-risk of poverty?
+          </label>
+          <div id="info-box" style="display: none; border: 1px solid #ccc; padding: 10px; margin-top: 10px; text-align: left;">
+            <p>
+                The share of persons with an equivalised disposable income below the risk-of-poverty threshold, 
+                which is set at 60 % of the national median equivalised disposable income (after social transfers).
+            </p>
+        </div>        
+      </div>
       </aside>
     </section>
-    <section id="line-chart-section" class="visualization-container">
 
+    <section id="line-chart-section" class="visualization-container">
       <div id="line-chart"></div>
       <aside id="line-chart-info">
-        <h2>Line Chart Information</h2>
-        <p>This chart shows the trend of poverty rates for men and women over time. The blue line represents men, and the red line represents women.</p>
+        <h2><i class="bi bi-graph-up"></i> Line Chart Information</h2>
+        <p>This line chart displays the poverty risk rate for men and women, where you can select a country and compare it to the EU average. 
+          The chart covers the period from 2010 to 2023.</p> 
+          <p>The <strong style="color: blue;">blue</strong> line represents the male poverty rate for the EU total, while the 
+          <strong style="color: red;">red</strong> line shows the female poverty rate for the EU total. The <strong style="color: green;">green</strong> 
+          and <strong style="color: orange;">orange</strong> lines display the corresponding poverty rates for women and men in the chosen country.</p>
       </aside>
     </section>
+
     <section id="bar-chart-section" class="visualization-container">
       <div id="bar-chart"></div>
       <aside id="bar-chart-info">
-        <h2>Bar Chart Information</h2>
-        <p>This bar chart displays the median daily income across different countries. X-axis shows countries, and Y-axis shows income levels.</p>
+        <h2><i class="bi bi-bar-chart"></i> Bar Chart Information</h2>
+        <p style="line-height: 2;"> This bar chart displays the median daily income across various countries, measured in international dollars. 
+        The <strong>X-axis</strong> displays the countries in ascending order of income.<br> The <strong>Y-axis</strong> represents income levels.</p>
       </aside>
     </section>
+
     <section id="poverty-battle-section" class="visualization-container">
       <div id="poverty-battle"></div>
       <aside id="poverty-battle-info">
-        <h2>Poverty Rate Battle Game</h2>
-        <p>Test your knowledge of poverty rates across different countries. Select the country you think has a higher poverty rate and see how many you can get right!</p>
+        <h2><i class="bi bi-controller"></i> Poverty Rate Battle</h2>
+        <div id="engage-section">
+          <h3><i class="bi bi-trophy"></i> Are You the Poverty Rate Champion?</h3>
+          <p>
+            ✅ <strong>Select:</strong> The country you think has a higher poverty rate<br>
+            🔬 <strong>Test:</strong> Your knowledge of poverty rates across different countries<br>
+            🎯 <strong>Challenge:</strong> Can you guess all the poverty rates correctly?<br>
+            🕹️ <strong>Play:</strong> See how high your score can get!<br>
+            📊 <strong>Learn:</strong> Discover interesting stats for every country as you play.<br>
+          </p>
+        </div>
       </aside>
     </section>
   </main>
+
   <footer id="site-footer">
     <p>&copy; 2024 Gruppe 6. All rights reserved.</p>
   </footer>
+
   <script src="map.js"></script>
   <script src="line-chart.js"></script>
   <script src="bar-chart.js"></script>
