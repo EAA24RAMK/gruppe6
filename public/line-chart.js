@@ -1,23 +1,71 @@
 fetch('/sex_poverty')
-.then(response => response.json())
-.then(data => {
-  data.forEach(d => {
-    console.log(`Geo: "${d.geo}", Sex: "${d.sex}"`);  // Log hver `geo` og `sex` værdi individuelt
-  });
-  drawLineChart(data);
-});
+  .then(response => response.json())
+  .then(data => {
+    const years = [2010, 2023];
+    const filteredData = data.filter(d => d.year >= years[0] && d.year <= years[1]);
 
-function drawLineChart(data) {
-  const filteredData = data.filter(d =>
+    // Filter for valid countries (exclude "Euro area" and "European countries")
+    const uniqueCountries = [...new Set(filteredData
+      .filter(d => ![
+        "Euro area - 19 countries  (2015-2022)", 
+        "Euro area – 20 countries (from 2023)", 
+        "European Union - 27 countries (2007-2013)", 
+        "European Union - 27 countries (from 2020)", 
+        "European Union - 28 countries (2013-2020)"].includes(d.geo))
+      .map(d => d.geo))];
+
+    // Add dropdown menu inside the line-chart section, positioned on the right side
+    let controlsContainer = d3.select('#line-chart-section')
+      .select('#line-chart-controls');
+
+    if (controlsContainer.empty()) {
+      controlsContainer = d3.select('#line-chart-section')
+        .append('div')
+        .attr('id', 'line-chart-controls')
+        .style('position', 'absolute')
+        .style('top', '1100px') // Adjust to align with chart
+        .style('right', '504px') // Positioned on the right
+        .style('text-align', 'center');
+      
+      controlsContainer.append('label')
+        .text('Select Country: ')
+        .style('display', 'block')
+        .style('margin-bottom', '5px');
+
+      controlsContainer.append('select')
+        .attr('id', 'country-selector')
+        .on('change', function () {
+          const selectedCountry = this.value;
+          updateChart(filteredData, selectedCountry);
+        });
+    }
+
+    // Populate dropdown options
+    const countryDropdown = d3.select('#country-selector');
+    countryDropdown.selectAll('option')
+      .data(uniqueCountries)
+      .enter()
+      .append('option')
+      .text(d => d)
+      .attr('value', d => d);
+
+    updateChart(filteredData, uniqueCountries[8]); // 8, så den viser DK først
+  });
+
+function updateChart(data, selectedCountry) {
+  const europeanUnionData = data.filter(d =>
     d.geo === 'European Union - 27 countries (from 2020)' &&
+    (d.sex === 'Males' || d.sex === 'Females')
+  );
+
+  const countryData = data.filter(d =>
+    d.geo === selectedCountry &&
     (d.sex === 'Males' || d.sex === 'Females')
   );
 
   d3.select('#line-chart').selectAll('*').remove();
 
-  const width = 900;
-  const height = 600;
-  const margin = { top: 50, right: 150, bottom: 70, left: 70 };
+  const width = 900, height = 600, margin = { top: 70, right: 200, bottom: 100, left: 100 };
 
   const svg = d3.select('#line-chart')
     .append('svg')
@@ -27,11 +75,11 @@ function drawLineChart(data) {
     .attr('transform', `translate(${margin.left},${margin.top})`);
 
   const x = d3.scaleLinear()
-    .domain(d3.extent(filteredData, d => +d.year))
+    .domain([2010, 2023])
     .range([0, width - margin.left - margin.right]);
 
   const y = d3.scaleLinear()
-    .domain([0, d3.max(filteredData, d => +d.obs_value)])
+    .domain([0, d3.max([...europeanUnionData, ...countryData], d => +d.obs_value)])
     .nice()
     .range([height - margin.top - margin.bottom, 0]);
 
@@ -40,17 +88,64 @@ function drawLineChart(data) {
     .y(d => y(+d.obs_value))
     .curve(d3.curveMonotoneX);
 
-  const males = filteredData.filter(d => d.sex === 'Males');
-  const females = filteredData.filter(d => d.sex === 'Females');
+  const plotLine = (data, color, label) => {
+    svg.append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', color)
+      .attr('stroke-width', 2)
+      .attr('d', line);
 
+    svg.selectAll(`.dot-${label}`)
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('cx', d => x(+d.year))
+      .attr('cy', d => y(+d.obs_value))
+      .attr('r', 4)
+      .attr('fill', color)
+      .on('mouseover', function (event, d) {
+        tooltip.style('opacity', 1)
+          .html(`Year: ${d.year}<br>Value: ${d.obs_value}`)
+          .style('left', `${event.pageX + 5}px`)
+          .style('top', `${event.pageY - 28}px`);
+      })
+      .on('mouseout', () => {
+        tooltip.style('opacity', 0);
+      });
+  };
+
+  // Tooltip
+  const tooltip = d3.select('body').append('div')
+    .attr('class', 'tooltip')
+    .style('position', 'absolute')
+    .style('text-align', 'center')
+    .style('width', 'auto')
+    .style('height', 'auto')
+    .style('padding', '8px')
+    .style('font', '12px sans-serif')
+    .style('background', 'lightsteelblue')
+    .style('border', '0px')
+    .style('border-radius', '8px')
+    .style('pointer-events', 'none')
+    .style('opacity', 0);
+
+  // Plot lines
+  plotLine(europeanUnionData.filter(d => d.sex === 'Males'), 'blue', 'eumales');
+  plotLine(europeanUnionData.filter(d => d.sex === 'Females'), 'red', 'eufemales');
+  plotLine(countryData.filter(d => d.sex === 'Males'), 'green', 'males');
+  plotLine(countryData.filter(d => d.sex === 'Females'), 'orange', 'females');
+
+  // Add axes
   svg.append('g')
     .attr('transform', `translate(0,${height - margin.top - margin.bottom})`)
     .call(d3.axisBottom(x).tickFormat(d3.format('d')))
     .append('text')
     .attr('x', (width - margin.left - margin.right) / 2)
-    .attr('y', 50)
+    .attr('y', 40)
     .attr('fill', 'black')
-    .attr('text-anchor', 'middle')
+    .style('font-size', '16px')
+    .style('text-anchor', 'middle')
     .text('Year');
 
   svg.append('g')
@@ -58,106 +153,59 @@ function drawLineChart(data) {
     .append('text')
     .attr('transform', 'rotate(-90)')
     .attr('x', -(height - margin.top - margin.bottom) / 2)
-    .attr('y', -50)
+    .attr('y', -60)
     .attr('fill', 'black')
-    .attr('text-anchor', 'middle')
-    .text('Poverty Rate (%)');
+    .style('font-size', '16px')
+    .style('text-anchor', 'middle')
+    .text('Risk of Poverty Rate');
 
-  svg.append('path')
-    .datum(males)
-    .attr('fill', 'none')
-    .attr('stroke', 'blue')
-    .attr('stroke-width', 2)
-    .attr('d', line);
-
-  svg.append('path')
-    .datum(females)
-    .attr('fill', 'none')
-    .attr('stroke', 'red')
-    .attr('stroke-width', 2)
-    .attr('d', line);
-
-  const tooltip = d3.select('body').append('div')
-    .attr('class', 'tooltip')
-    .style('opacity', 0);
-
-  svg.selectAll('.dot-males')
-    .data(males)
-    .enter()
-    .append('circle')
-    .attr('cx', d => x(+d.year))
-    .attr('cy', d => y(+d.obs_value))
-    .attr('r', 4)
-    .attr('fill', 'blue')
-    .on('mouseover', (event, d) => {
-      tooltip.transition().duration(200).style('opacity', 0.9);
-      tooltip.html(`Year: ${d.year}<br>Poverty Rate: ${d.obs_value}%`)
-        .style('left', `${event.pageX + 10}px`)
-        .style('top', `${event.pageY - 28}px`);
-    })
-    .on('mouseout', () => tooltip.transition().duration(500).style('opacity', 0));
-
-  svg.selectAll('.dot-females')
-    .data(females)
-    .enter()
-    .append('circle')
-    .attr('cx', d => x(+d.year))
-    .attr('cy', d => y(+d.obs_value))
-    .attr('r', 4)
-    .attr('fill', 'red')
-    .on('mouseover', (event, d) => {
-      tooltip.transition().duration(200).style('opacity', 0.9);
-      tooltip.html(`Year: ${d.year}<br>Poverty Rate: ${d.obs_value}%`)
-        .style('left', `${event.pageX + 10}px`)
-        .style('top', `${event.pageY - 28}px`);
-    })
-    .on('mouseout', () => tooltip.transition().duration(500).style('opacity', 0));
-
-  // Add legend
-  const legend = svg.append('g')
-    .attr('transform', `translate(${width - margin.right}, 20)`);
-
-  legend.append('circle')
-    .attr('cx', 0)
-    .attr('cy', 0)
-    .attr('r', 5)
-    .attr('fill', 'blue');
-
-  legend.append('text')
-    .attr('x', 10)
-    .attr('y', 5)
-    .text('Males')
-    .attr('font-size', '12px')
-    .attr('alignment-baseline', 'middle');
-
-  legend.append('circle')
-    .attr('cx', 0)
-    .attr('cy', 20)
-    .attr('r', 5)
-    .attr('fill', 'red');
-
-  legend.append('text')
-    .attr('x', 10)
-    .attr('y', 25)
-    .text('Females')
-    .attr('font-size', '12px')
-    .attr('alignment-baseline', 'middle');
-
-  // Add a title
+  // Add chart title
   svg.append('text')
     .attr('x', (width - margin.left - margin.right) / 2)
     .attr('y', -20)
-    .attr('text-anchor', 'middle')
-    .attr('font-size', '16px')
     .attr('fill', 'black')
-    .text('Poverty Rate Over Time by Sex');
+    .style('font-size', '20px')
+    .style('font-weight', 'bold')
+    .style('text-anchor', 'middle')
+    .text(`${selectedCountry} compared to EU Total`);
 
-  // Add source text
+  // Add legend
+  const legend = svg.append('g')
+    .attr('transform', `translate(${width - margin.left - margin.right + 20}, 0)`);
+
+  const legendData = [
+    { label: 'Males: EU Total', color: 'blue' },
+    { label: 'Females: EU Total', color: 'red' },
+    { label: `Males: ${selectedCountry}`, color: 'green' },
+    { label: `Females: ${selectedCountry}`, color: 'orange' }
+  ];
+
+  legend.selectAll('circle')
+    .data(legendData)
+    .enter()
+    .append('circle')
+    .attr('cx', 10)
+    .attr('cy', (d, i) => i * 20)
+    .attr('r', 6)
+    .attr('fill', d => d.color);
+
+  legend.selectAll('text')
+    .data(legendData)
+    .enter()
+    .append('text')
+    .attr('x', 25)
+    .attr('y', (d, i) => i * 20 + 5)
+    .text(d => d.label)
+    .style('font-size', '12px')
+    .attr('fill', 'black')
+    .style('alignment-baseline', 'middle');
+
+    // Add source text
   svg.append('text')
-    .attr('x', width - margin.left - 10)
-    .attr('y', height - margin.top - 10)
-    .attr('text-anchor', 'end')
-    .attr('font-size', '12px')
-    .attr('fill', 'grey')
-    .text('Data source: Eurostat');
-}  
+  .attr('x', width - margin.left - 10)
+  .attr('y', height - margin.top - 10)
+  .attr('text-anchor', 'end')
+  .attr('font-size', '12px')
+  .attr('fill', 'grey')
+  .text('Data source: Eurostat');
+}
