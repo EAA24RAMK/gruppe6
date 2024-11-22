@@ -187,6 +187,7 @@ footer#site-footer {
 
 .box p {
   font-size: 24px;
+  color:#003366
 }
 
 .box li a {
@@ -199,22 +200,10 @@ footer#site-footer {
   text-decoration: underline;
 }
 
-#engage-section {
+#map-info, #line-chart-info, #bar-chart-info, #poverty-battle-info {
   background: #f9f9f9;
   border-left: 4px solid #1e90ff;
   padding: 10px 15px;
   margin-top: 20px;
   border-radius: 5px;
-}
-
-#engage-section h3 {
-  color: #1e90ff;
-  font-size: 1.4em;
-  margin-bottom: 10px;
-}
-
-#engage-section p {
-  font-size: 1em;
-  line-height: 1.6;
-  color: #333;
 }
