@@ -207,3 +207,58 @@ footer#site-footer {
   margin-top: 20px;
   border-radius: 5px;
 }
+
+/* Tooltip Styling */
+.info-hover {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.info-hover i {
+  color: #003366; /* Icon color */
+  font-size: 1.2em;
+  transition: color 0.3s ease-in-out;
+}
+
+.info-hover:hover i {
+  color: #00509e; /* Change icon color on hover */
+}
+
+/* Tooltip text */
+.info-hover .info-hover-text {
+  visibility: hidden;
+  width: 300px;
+  background-color: #003366; /* Tooltip background color */
+  color: #fff;
+  text-align: left;
+  border-radius: 5px;
+  padding: 10px;
+  position: absolute;
+  top: 125%; /* Place below the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Tooltip arrow */
+.info-hover .info-hover-text::after {
+  content: "";
+  position: absolute;
+  bottom: 100%; /* Arrow at the top of the tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #003366 transparent; /* Match tooltip background */
+}
+
+/* Show tooltip on hover */
+.info-hover:hover .info-hover-text {
+  visibility: visible;
+  opacity: 1;
+}
