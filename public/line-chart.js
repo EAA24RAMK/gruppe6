@@ -23,12 +23,12 @@ fetch('/sex_poverty')
         .append('div')
         .attr('id', 'line-chart-controls')
         .style('position', 'absolute')
-        .style('top', '1100px') // Adjust to align with chart
+        .style('top', '1060px') // Adjust to align with chart
         .style('right', '504px') // Positioned on the right
         .style('text-align', 'center');
       
       controlsContainer.append('label')
-        .text('Select Country: ')
+        .text('Select country: ')
         .style('display', 'block')
         .style('margin-bottom', '5px');
 
@@ -124,7 +124,7 @@ function updateChart(data, selectedCountry) {
     .style('height', 'auto')
     .style('padding', '8px')
     .style('font', '12px sans-serif')
-    .style('background', 'lightsteelblue')
+    .style('background', 'black')
     .style('border', '0px')
     .style('border-radius', '8px')
     .style('pointer-events', 'none')
@@ -167,7 +167,7 @@ function updateChart(data, selectedCountry) {
     .style('font-size', '20px')
     .style('font-weight', 'bold')
     .style('text-anchor', 'middle')
-    .text(`${selectedCountry} compared to EU Total`);
+    .text(`${selectedCountry} compared to EU average`);
 
   // Add legend
   const legend = svg.append('g')
