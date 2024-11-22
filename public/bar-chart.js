@@ -108,4 +108,14 @@ fetch('/daily_median_income')
     .attr('font-size', '12px')
     .attr('fill', 'grey')
     .text('Data source: Our World in Data, World Bank');
+
+  // Add chart title
+  svg.append('text')
+  .attr('x', (width - margin.left - margin.right) / 2)
+  .attr('y', 10)
+  .attr('fill', 'black')
+  .style('font-size', '20px')
+  .style('font-weight', 'bold')
+  .style('text-anchor', 'middle')
+  .text(`Daily Median Income in 2020`);
 }
