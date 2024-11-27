@@ -118,13 +118,3 @@ document.addEventListener('DOMContentLoaded', function() {
       // Trigger initial map load
       yearSelect.dispatchEvent(new Event('change'));
     });
-
-    // What is at-risk of poverty? tekstboks 
-    document.getElementById("toggle-question").addEventListener("click", function() {
-        const infoBox = document.getElementById("info-box");
-        if (infoBox.style.display === "none" || infoBox.style.display === "") {
-            infoBox.style.display = "block";
-        } else {
-            infoBox.style.display = "none";
-        }
-    });
