@@ -23,7 +23,7 @@ fetch('/sex_poverty')
         .append('div')
         .attr('id', 'line-chart-controls')
         .style('position', 'absolute')
-        .style('top', '130%') // Adjust to align with chart
+        .style('top', '125%') // Adjust to align with chart
         .style('right', '35%') // Positioned on the right
         .style('color', '#003366')
         .style('font-weight', 'bold')
