@@ -9,7 +9,7 @@ fetch('/sex_poverty')
       .filter(d => ![
         "Euro area - 19 countries  (2015-2022)", 
         "Euro area – 20 countries (from 2023)", 
-        "European Union - 27 countries (2007-2013)", 
+        "European Union - 27 countries (2007-2013)",
         "European Union - 27 countries (from 2020)", 
         "European Union - 28 countries (2013-2020)"].includes(d.geo))
       .map(d => d.geo))];
@@ -23,8 +23,10 @@ fetch('/sex_poverty')
         .append('div')
         .attr('id', 'line-chart-controls')
         .style('position', 'absolute')
-        .style('top', '1060px') // Adjust to align with chart
-        .style('right', '504px') // Positioned on the right
+        .style('top', '130%') // Adjust to align with chart
+        .style('right', '35%') // Positioned on the right
+        .style('color', '#003366')
+        .style('font-weight', 'bold')
         .style('text-align', 'center');
       
       controlsContainer.append('label')
