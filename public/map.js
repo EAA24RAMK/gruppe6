@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const yearSelect = document.getElementById('year');
    
-   // Populate year select options
+   // Opret year select muligheder
    for (let year = 2012; year <= 2023; year++) {
     const option = document.createElement('option');
     option.value = year;
