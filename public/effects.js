@@ -1,11 +1,11 @@
 document.querySelectorAll('a.nav-button').forEach(button => {
     button.addEventListener('click', function (event) {
-      event.preventDefault(); // Prevent default anchor behavior
+      event.preventDefault(); // Fjern default
       const targetId = this.getAttribute('href'); // Get the href of the clicked button
       const targetElement = document.querySelector(targetId); // Select the target element
   
       if (targetElement) {
-        // Smooth scroll to the target section
+        // Smooth scroll to selected section
         targetElement.scrollIntoView({
           behavior: 'smooth',
           block: 'start',
