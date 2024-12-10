@@ -5,7 +5,7 @@ fetch('/sex_poverty')
   });
 
   function createPovertyRateBattle(data) {
-    // Clear previous content
+    // Clear previous
     d3.select('#poverty-battle').selectAll('*').remove();
 
     const container = d3.select('#poverty-battle')
@@ -100,7 +100,7 @@ fetch('/sex_poverty')
         .text(point.geo)
         .style('color', '#003366');
 
-      // Rest of the existing code for displaying country details
+      // Higher poverty rate knapper
       card.append('p').text(`Year: ${currentYear}`);
       card.append('p').text(`Sex: ${point.sex}`);
 
@@ -120,12 +120,12 @@ fetch('/sex_poverty')
     resultDisplay.text('');
 }
 
-    let questionAnswered = false; // Track if the current question has been answered
+    let questionAnswered = false; 
 
     function checkAnswer(selectedPoint, dataPoints) {
-      if (questionAnswered) return; // Prevent multiple answers
+      if (questionAnswered) return; 
   
-      questionAnswered = true; // Mark the question as answered
+      questionAnswered = true; 
   
       const maxPovertyRate = d3.max(dataPoints, d => +d.obs_value);
       const correct = +selectedPoint.obs_value === maxPovertyRate;
@@ -143,7 +143,7 @@ fetch('/sex_poverty')
               .style('color', +point.obs_value === maxPovertyRate ? 'green' : 'red');
       });
   
-      // Disable only the answer buttons
+      // Kun muligt at trykke 'Higher Poverty Rate' en gang
       d3.selectAll('.answer-button').attr('disabled', true);
   
       nextButton.style('display', 'inline-block');
@@ -151,7 +151,7 @@ fetch('/sex_poverty')
   
     function nextRound() {
       questionAnswered = false; // Reset flag for new round
-      d3.selectAll('.answer-button').attr('disabled', null); // Re-enable answer buttons
+      d3.selectAll('.answer-button').attr('disabled', null); // Gør det muligt at trykke igen
   
       const randomDataPoints = selectRandomDataPoints();
       displayDataPoints(randomDataPoints);
@@ -160,7 +160,7 @@ fetch('/sex_poverty')
 
     nextButton.on('click', nextRound);
 
-    // Start the game
+    // Start spillet
     nextRound();
 }
 
