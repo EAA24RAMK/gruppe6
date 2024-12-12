@@ -119,4 +119,3 @@ fetch('/daily_median_income')
   .style('text-anchor', 'middle')
   .text(`Daily Median Income in 2020`);
 }
-
